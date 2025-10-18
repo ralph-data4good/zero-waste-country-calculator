@@ -2047,3 +2047,244 @@ textarea:focus-visible,
 .copy-btn.copied svg {
   stroke: #fff;
 }
+
+/* =============================================
+   Introduction Section
+   ============================================= */
+
+.intro-section {
+  background: linear-gradient(135deg, var(--zw-primary-50) 0%, var(--zw-neutral-50) 100%);
+  border: 1px solid var(--zw-neutral-200);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.intro-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.intro-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--zw-brand-ink);
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.intro-lead {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--zw-neutral-700);
+  text-align: center;
+  margin: 0 0 2rem 0;
+}
+
+.intro-lead strong {
+  color: var(--zw-brand-primary);
+}
+
+/* Features Grid */
+.intro-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.intro-feature {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.5rem;
+  background: white;
+  border: 1px solid var(--zw-neutral-200);
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.intro-feature:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 12px -2px rgba(0, 0, 0, 0.08);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.intro-feature h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--zw-brand-ink);
+  margin: 0 0 0.5rem 0;
+}
+
+.intro-feature p {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--zw-neutral-600);
+  margin: 0;
+}
+
+/* How It Works Section */
+.intro-cta {
+  background: white;
+  border: 2px solid var(--zw-brand-primary);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.intro-cta-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--zw-brand-ink);
+  margin: 0 0 1.25rem 0;
+  text-align: center;
+}
+
+.intro-steps {
+  margin: 0 0 2rem 0;
+  padding-left: 1.5rem;
+  list-style: none;
+  counter-reset: step-counter;
+}
+
+.intro-steps li {
+  counter-increment: step-counter;
+  position: relative;
+  padding-left: 2.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--zw-neutral-700);
+}
+
+.intro-steps li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  background: var(--zw-brand-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.intro-steps li strong {
+  color: var(--zw-brand-ink);
+}
+
+/* CTA Actions */
+.intro-actions {
+  text-align: center;
+}
+
+.btn-large {
+  font-size: 1.125rem;
+  padding: 1rem 2.5rem;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-large:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+}
+
+.btn-large span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.intro-note {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--zw-neutral-500);
+  font-style: italic;
+}
+
+/* Disclaimer */
+.intro-disclaimer {
+  background: var(--zw-neutral-100);
+  border-left: 4px solid var(--zw-brand-accent);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.intro-disclaimer p {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--zw-neutral-700);
+  margin: 0;
+}
+
+.intro-disclaimer strong {
+  color: var(--zw-brand-ink);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .intro-section {
+    padding: 2rem 1.25rem;
+    margin-bottom: 2rem;
+  }
+  
+  .intro-title {
+    font-size: 1.5rem;
+  }
+  
+  .intro-lead {
+    font-size: 1.125rem;
+  }
+  
+  .intro-features {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .intro-feature {
+    padding: 1.25rem;
+  }
+  
+  .intro-cta {
+    padding: 1.5rem;
+  }
+  
+  .intro-steps li {
+    font-size: 0.9375rem;
+    padding-left: 2.25rem;
+  }
+  
+  .intro-steps li::before {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .btn-large {
+    font-size: 1rem;
+    padding: 0.875rem 2rem;
+    width: 100%;
+  }
+}
+
+/* Print Styles - Hide intro section when printing */
+@media print {
+  .intro-section {
+    display: none;
+  }
+}

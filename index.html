@@ -34,6 +34,73 @@
     <main id="app" class="container" role="main">
       <div aria-live="polite" aria-atomic="true" class="sr-only" id="live"></div>
       <div id="printDisclaimer" class="disclaimer"></div>
+      
+      <!-- Introduction Section -->
+      <section class="intro-section" role="region" aria-labelledby="introTitle">
+        <div class="intro-content">
+          <h2 id="introTitle" class="intro-title">Community Waste Management Program Calculator</h2>
+          
+          <div class="intro-description">
+            <p class="intro-lead">
+              <strong>Plan effective waste management programs</strong> for your community with data-driven estimates 
+              tailored to Philippines and Indonesia contexts.
+            </p>
+            
+            <div class="intro-features">
+              <div class="intro-feature">
+                <span class="feature-icon">📊</span>
+                <div>
+                  <h3>Scenario-Based Estimates</h3>
+                  <p>Get waste characterization, diversion potential, and income projections based on proven models.</p>
+                </div>
+              </div>
+              
+              <div class="intro-feature">
+                <span class="feature-icon">🎯</span>
+                <div>
+                  <h3>Customized for Your Context</h3>
+                  <p>Answer a few questions to find the best-fit scenario for your locality's unique characteristics.</p>
+                </div>
+              </div>
+              
+              <div class="intro-feature">
+                <span class="feature-icon">💡</span>
+                <div>
+                  <h3>Actionable Insights</h3>
+                  <p>Explore composting and recycling options with real-time calculations and visual charts.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="intro-cta">
+            <h3 class="intro-cta-title">How It Works</h3>
+            <ol class="intro-steps">
+              <li><strong>Map your scenario</strong> – Answer quick questions about your community</li>
+              <li><strong>Review presets</strong> – See default values based on your scenario</li>
+              <li><strong>Explore options</strong> – Adjust parameters and see live results</li>
+              <li><strong>Get insights</strong> – View waste characterization, diversion rates, and income potential</li>
+              <li><strong>Share or print</strong> – Export your estimates for planning or reporting</li>
+            </ol>
+            
+            <div class="intro-actions">
+              <a href="#step0" class="btn primary btn-large">
+                <span>Get Started →</span>
+              </a>
+              <p class="intro-note">Takes about 5 minutes to complete</p>
+            </div>
+          </div>
+          
+          <div class="intro-disclaimer">
+            <p>
+              <strong>Note:</strong> This tool provides <em>indicative estimates</em> for planning and education purposes. 
+              Presets are based on averages and may not reflect specific local conditions. 
+              For formal reporting or procurement, consult with waste management professionals.
+            </p>
+          </div>
+        </div>
+      </section>
+      
       <!-- Step 0: Friendly Scenario Mapping (Q1-Q7 + Unsure) -->
       <section class="step" id="step0" aria-labelledby="step0Title">
         <h2 class="step-title" id="step0Title">
@@ -180,6 +247,9 @@
           <button type="button" id="openScenarioSheet" class="btn primary">Choose scenario</button>
         </div>
         <div id="scenarioGrid" class="scenario-grid" role="list" aria-label="Scenario options"></div>
+        <div class="form-actions">
+          <button id="toStep2" class="btn primary" data-next>Next: Review presets →</button>
+        </div>
       </section>
 
       <!-- Step 2: Presets & Minimal Edits -->
@@ -224,6 +294,9 @@
             <div id="tableWaste"></div>
           </div>
         </div>
+        <div class="form-actions">
+          <button id="toStep4" class="btn primary" data-next>Next: Diversion controls →</button>
+        </div>
       </section>
 
       <!-- Step 4: Output 2 -->
@@ -240,6 +313,9 @@
           <div class="card">
             <div id="tableDiversion"></div>
           </div>
+        </div>
+        <div class="form-actions">
+          <button id="toStep5" class="btn primary" data-next>See final outputs →</button>
         </div>
       </section>
 

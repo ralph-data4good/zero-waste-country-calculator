@@ -65,15 +65,23 @@ function setState(patch) {
   localStorage.setItem(lsKey, JSON.stringify(state));
   updateURLFromState();
   
-  // Show/hide steps based on current step
+  // Show all steps by default (no hiding)
   if ('step' in patch) {
     // Ensure stepEls is populated, or populate it now
     if (stepEls.length === 0) {
       stepEls = [ '#step0','#step1','#step2','#step3','#step4','#step5' ].map(sel => document.querySelector(sel));
     }
-    stepEls.forEach((el, idx) => {
-      if (el) el.hidden = (idx !== state.step);
+    
+    // Show all steps (remove the hiding logic)
+    stepEls.forEach((el) => {
+      if (el) el.hidden = false;
     });
+    
+    // Render outputs when navigating to output steps
+    if (patch.step >= 3) {
+      // Use setTimeout to ensure DOM is ready after step visibility changes
+      setTimeout(() => renderOutputs(), 0);
+    }
   }
   
   for (const fn of listeners) fn(state);
@@ -477,7 +485,26 @@ function updateNextDisabled() {
   next.disabled = !ok;
 }
 
-el('#toStep3').addEventListener('click', (e) => { e.preventDefault(); setState({ step: 3 }); renderOutputs(); });
+// Step navigation buttons
+const toStep2Btn = el('#toStep2');
+if (toStep2Btn) {
+  toStep2Btn.addEventListener('click', (e) => { e.preventDefault(); setState({ step: 2 }); });
+}
+
+const toStep3Btn = el('#toStep3');
+if (toStep3Btn) {
+  toStep3Btn.addEventListener('click', (e) => { e.preventDefault(); setState({ step: 3 }); });
+}
+
+const toStep4Btn = el('#toStep4');
+if (toStep4Btn) {
+  toStep4Btn.addEventListener('click', (e) => { e.preventDefault(); setState({ step: 4 }); });
+}
+
+const toStep5Btn = el('#toStep5');
+if (toStep5Btn) {
+  toStep5Btn.addEventListener('click', (e) => { e.preventDefault(); setState({ step: 5 }); });
+}
 
 // Accessibility: announce helper
 function announce(msg){ const live=el('#live'); if(!live) return; live.textContent=''; setTimeout(()=>{ live.textContent=msg; }, 10); }
@@ -781,14 +808,17 @@ async function renderOutputs() {
 }
 
 // Period tabs (ID only)
-document.getElementById('periodTabs').addEventListener('click', (e) => {
-  const btn = e.target.closest('button.tab'); if (!btn) return;
-  for (const b of e.currentTarget.querySelectorAll('.tab')) b.classList.remove('active');
-  btn.classList.add('active');
-  setState({ period: btn.dataset.period });
-  renderOutputs();
-  announce('Showing '+btn.textContent+' period');
-});
+const periodTabs = document.getElementById('periodTabs');
+if (periodTabs) {
+  periodTabs.addEventListener('click', (e) => {
+    const btn = e.target.closest('button.tab'); if (!btn) return;
+    for (const b of e.currentTarget.querySelectorAll('.tab')) b.classList.remove('active');
+    btn.classList.add('active');
+    setState({ period: btn.dataset.period });
+    renderOutputs();
+    announce('Showing '+btn.textContent+' period');
+  });
+}
 
 // Income controls
 function renderIncomeControls() {
@@ -857,11 +887,14 @@ function renderResources() {
 subscribe(() => { renderScenarioGrid(); renderPresetsAndEdits(); renderDiversionControls(); renderIncomeControls(); renderResources(); });
 renderScenarioGrid(); renderPresetsAndEdits(); renderDiversionControls(); renderIncomeControls(); renderResources();
 
-// Populate step elements array and show initial step
+// Populate step elements array and show all steps
 stepEls = [ '#step0','#step1','#step2','#step3','#step4','#step5' ].map(sel => document.querySelector(sel));
-stepEls.forEach((el, idx) => {
-  if (el) el.hidden = (idx !== state.step);
+stepEls.forEach((el) => {
+  if (el) el.hidden = false; // Show all steps
 });
+
+// Render outputs on initial load
+renderOutputs();
 
 // If URL had no scenario set, pick the first for the country
 if (!state.scenarioKey) setState({ scenarioKey: scenariosForCountry(state.country)[0]?.key || '' });
