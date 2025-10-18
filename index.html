@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Country-Focused Community Waste Management Program Calculator</title>
+    <meta name="description" content="Zero Waste Asia — Scenario UI MVP for PH and ID">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href='https://fonts.googleapis.com/css?family=Schibsted Grotesk:wght@300;400;500;600;700&display=swap' rel='stylesheet'>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header" role="banner">
+      <div class="brand">
+        <img src="assets/logo.svg" alt="Zero Waste Asia logo" class="logo" width="160" height="40">
+        <div class="titles">
+          <h1 id="appTitle">Zero Waste Asia Calculator</h1>
+          <p class="subtitle" id="appSubtitle">Community Waste Management Program Calculator</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="shareBtn" class="btn" data-popover="Copy share link to clipboard">
+          <img src="assets/icon-share.svg" alt="Share" aria-hidden="true">
+          <span class="mobile-hidden">Copy share link</span>
+        </button>
+        <button id="printBtn" class="btn" data-popover="Print or save as PDF">
+          <img src="assets/icon-print.svg" alt="Print" aria-hidden="true">
+          <span class="mobile-hidden">Print / Save PDF</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="app" class="container" role="main">
+      <div aria-live="polite" aria-atomic="true" class="sr-only" id="live"></div>
+      <div id="printDisclaimer" class="disclaimer"></div>
+      <!-- Step 0: Friendly Scenario Mapping (Q1-Q7 + Unsure) -->
+      <section class="step" id="step0" aria-labelledby="step0Title">
+        <h2 class="step-title" id="step0Title">
+          <span class="step-badge">Step 0</span>
+          <span id="step0TitleText">Map your nearest scenario</span>
+        </h2>
+        <p class="help text-muted">Answer a few questions to find the best-fit scenario. Choose "Unsure" if you don't know.</p>
+        
+        <form id="preForm" class="form-grid" novalidate>
+          <!-- Q1: Country & Area -->
+          <div class="form-control col-6">
+            <label for="s0Country">Country *</label>
+            <select id="s0Country" name="country" required>
+              <option value="PH">Philippines</option>
+              <option value="ID">Indonesia</option>
+            </select>
+          </div>
+          <div class="form-control col-6">
+            <label for="s0Area">Area type</label>
+            <select id="s0Area" name="area">
+              <option value="Urban">Urban</option>
+              <option value="Peri-urban">Peri-urban</option>
+              <option value="Rural">Rural</option>
+              <option value="Unsure">Unsure</option>
+            </select>
+          </div>
+
+          <!-- Q2: Dominant Activities (max 2) -->
+          <div class="form-control col-12">
+            <label for="s0ActivitySelectBtn">Dominant activities (pick up to 2)</label>
+            <div class="multi-select">
+              <button type="button" id="s0ActivitySelectBtn" class="multi-select__trigger" aria-haspopup="listbox" aria-expanded="false">
+                Select activities...
+              </button>
+              <div id="s0ActivityDropdown" class="multi-select__dropdown" role="listbox" hidden>
+                <!-- Populated by JS -->
+              </div>
+            </div>
+            <div id="s0ActivityChips" class="chip-row" role="region" aria-label="Selected activities"></div>
+            <small class="help">Add rough % for each activity. Choose "Unsure" if you don't know.</small>
+            <div id="s0ActivityError" class="error-text" role="alert"></div>
+          </div>
+
+          <!-- Q3: Terrain -->
+          <div class="form-control col-6">
+            <label>Terrain</label>
+            <div class="radio-row">
+              <label><input type="radio" name="s0Relief" value="Flat"> Mostly flatland</label>
+              <label><input type="radio" name="s0Relief" value="Mountainous"> Mountainous</label>
+              <label><input type="radio" name="s0Relief" value="Unsure" checked> Unsure</label>
+            </div>
+          </div>
+
+          <!-- Q4: Coastal Island -->
+          <div class="form-control col-6">
+            <label for="s0Island">Is the area a coastal island?</label>
+            <select id="s0Island">
+              <option value="unsure">Unsure</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+            <small class="help">Select "Yes" only for insular/coastal island localities.</small>
+          </div>
+
+          <!-- Q5: Population Band -->
+          <div class="form-control col-6">
+            <label for="s0Population">Population band</label>
+            <select id="s0Population">
+              <option value="unsure">Unsure</option>
+              <option value="micro">&lt;5k</option>
+              <option value="small">5–50k</option>
+              <option value="medium">50–250k</option>
+              <option value="large">250k–1M</option>
+              <option value="vlarge">&gt;1M</option>
+            </select>
+          </div>
+
+          <!-- Q6: Segregation / Participation -->
+          <div class="form-control col-6">
+            <label for="s0Participation">Segregation / participation</label>
+            <select id="s0Participation">
+              <option value="unsure">Unsure</option>
+              <option value="none">None (0–10%)</option>
+              <option value="emerging">Emerging (10–30%)</option>
+              <option value="moderate">Moderate (30–60%)</option>
+              <option value="high">High (&gt;60%)</option>
+            </select>
+          </div>
+
+          <!-- Q7: Collection Frequency -->
+          <div class="form-control col-6">
+            <label for="s0Collection">Collection frequency</label>
+            <select id="s0Collection">
+              <option value="unsure">Unsure</option>
+              <option value="none">None</option>
+              <option value="weekly">Weekly</option>
+              <option value="2to3">2–3×/week</option>
+              <option value="daily">Daily</option>
+            </select>
+          </div>
+
+          <!-- Optional: Locality Name -->
+          <div class="form-control col-6">
+            <label for="s0Locality">Locality name (optional)</label>
+            <input id="s0Locality" name="locality" placeholder="e.g., Barangay San Isidro" />
+          </div>
+        </form>
+
+        <!-- Sticky CTA -->
+        <div class="sticky-cta">
+          <button type="button" id="s0SuggestBtn" class="btn btn-primary">Suggest scenario</button>
+          <button type="button" id="s0SkipBtn" class="btn btn-outline">Skip for now</button>
+          <span id="s0Confidence" class="confidence-badge"></span>
+        </div>
+
+        <!-- Suggestion Result -->
+        <div id="s0Suggestion" class="info-banner" role="status" aria-live="polite" hidden></div>
+      </section>
+
+      <!-- Step 1: Country, Scenario, Locality -->
+      <section class="step" id="step1" aria-labelledby="step1Title">
+        <h2 class="step-title" id="step1Title">
+          <span class="step-badge">Step 1</span>
+          Country, scenario, and locality
+        </h2>
+        <div class="grid-3">
+          <div class="form-control">
+            <label for="country">Country</label>
+            <select id="country">
+              <option value="PH">Philippines</option>
+              <option value="ID">Indonesia</option>
+            </select>
+          </div>
+          <div class="form-control">
+            <label for="locality">Locality name</label>
+            <input id="locality" placeholder="Auto-filled from Step 0" />
+          </div>
+          <div class="form-control">
+            <label>Selected scenario</label>
+            <div id="selectedScenario" class="chip">None</div>
+          </div>
+        </div>
+        <div class="mobile-only sticky-cta">
+          <button type="button" id="openScenarioSheet" class="btn primary">Choose scenario</button>
+        </div>
+        <div id="scenarioGrid" class="scenario-grid" role="list" aria-label="Scenario options"></div>
+      </section>
+
+      <!-- Step 2: Presets & Minimal Edits -->
+      <section class="step" id="step2" aria-labelledby="step2Title">
+        <h2 class="step-title" id="step2Title">
+          <span class="step-badge">Step 2</span>
+          Presets & minimal edits
+        </h2>
+        <div class="grid-2">
+          <div>
+            <h3>Presets (read-only) with provenance</h3>
+            <div id="presetPanel" class="card"></div>
+          </div>
+          <div>
+            <h3>Editable inputs</h3>
+            <form id="editForm" class="edit-form" novalidate></form>
+            <div class="form-actions">
+              <button id="resetDefaults" class="btn">Reset to defaults</button>
+              <button id="toStep3" class="btn primary" data-next>Next</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 3: Output 1 -->
+      <section class="step" id="step3" aria-labelledby="step3Title">
+        <h2 class="step-title" id="step3Title">
+          <span class="step-badge">Step 3</span>
+          Waste Characterization
+        </h2>
+        <div class="tabs" id="periodTabs" hidden>
+          <button data-period="D" class="tab active">Day</button>
+          <button data-period="W" class="tab">Week</button>
+          <button data-period="M" class="tab">Month</button>
+          <button data-period="Y" class="tab">Year</button>
+        </div>
+        <div class="grid-2">
+          <div class="card chart-container">
+            <canvas id="chartWaste"></canvas>
+          </div>
+          <div class="card">
+            <div id="tableWaste"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 4: Output 2 -->
+      <section class="step" id="step4" aria-labelledby="step4Title">
+        <h2 class="step-title" id="step4Title">
+          <span class="step-badge">Step 4</span>
+          Waste Diversion with Composting
+        </h2>
+        <div class="controls-inline" id="diversionControls"></div>
+        <div class="grid-2">
+          <div class="card chart-container">
+            <canvas id="chartDiversion"></canvas>
+          </div>
+          <div class="card">
+            <div id="tableDiversion"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 5: Output 3 -->
+      <section class="step" id="step5" aria-labelledby="step5Title">
+        <h2 class="step-title" id="step5Title">
+          <span class="step-badge">Step 5</span>
+          Potential Income (Composting & Recycling)
+        </h2>
+        <div class="controls-inline" id="incomeControls"></div>
+        <div class="grid-2">
+          <div class="card chart-container">
+            <canvas id="chartIncome"></canvas>
+          </div>
+          <div class="card">
+            <div id="tableIncome"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer" role="contentinfo">
+      <h2 id="resourcesHeader">Featured best practice resources on Organics Management</h2>
+      <div id="resources" class="resources-grid"></div>
+      <div class="muted small">Edit items in <code>config.js</code>. Links will be included in the PDF.</div>
+    </footer>
+
+    <!-- Bottom sheets for mobile -->
+    <div id="sheet" class="sheet" aria-hidden="true">
+      <div class="panel" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+        <div class="handle" aria-hidden="true"></div>
+        <h3 id="sheetTitle">Choose scenario</h3>
+        <div id="sheetBody"></div>
+        <div class="form-actions" style="justify-content:flex-end"><button id="closeSheet" class="btn">Close</button></div>
+      </div>
+    </div>
+
+    <!-- Hidden QA checklist for maintainers -->
+    <section id="qaChecklist" hidden>
+      <ul>
+        <li>Scenario change reloads presets and provenance</li>
+        <li>Share URL restores all state</li>
+        <li>Validation blocks invalid inputs</li>
+        <li>Units correct per country</li>
+        <li>PH compare and ID toggle work</li>
+        <li>Print includes disclaimer + resources</li>
+        <li>Keyboard navigation and labels present</li>
+        <li>Charts lazy-load only when shown</li>
+      </ul>
+    </section>
+
+    <script type="module" src="app.js"></script>
+  </body>
+  </html>
+
+
